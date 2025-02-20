@@ -1,0 +1,19 @@
+spring:
+  mail:
+    properties:
+      mail:
+        debug: 'true'
+        smtp:
+          starttls:
+            enable: 'true'
+            required: 'true'
+          auth: 'true'
+        mime:
+          charset: UTF-8
+        transport:
+          protocol: smtp
+    host: smtp.gmail.com
+    username: pettopia.corp
+    password: zqjg gyeg ueas tmwi
+    port: '587'
+    default-encoding: 'UTF-8'
