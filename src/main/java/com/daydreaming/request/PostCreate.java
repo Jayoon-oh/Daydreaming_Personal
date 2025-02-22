@@ -1,23 +1,22 @@
 package com.daydreaming.request;
 
+import lombok.*;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-@Getter
+
 @Setter
+@Getter
 @ToString
+@NoArgsConstructor
 public class PostCreate {
 
-    @NotBlank(message="타이틀을 입력해주세요.")
+    @NotBlank(message = "타이틀을 입력하세요.")
     private String title;
 
-    @NotBlank(message="컨텐츠를 입력해주세요.")
+    @NotBlank(message = "콘텐츠를 입력해주세요.")
     private String content;
 
-    @Builder // 타입 순서관리를 위함.
+    @Builder
     public PostCreate(String title, String content) {
         this.title = title;
         this.content = content;

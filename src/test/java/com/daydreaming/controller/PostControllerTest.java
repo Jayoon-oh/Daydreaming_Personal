@@ -26,10 +26,10 @@ class PostControllerTest {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private PostRepository postRepository;
+    private MockMvc mockMvc;
 
     @Autowired
-    private MockMvc mockMvc;
+    private PostRepository postRepository;
 
     @BeforeEach
     void clean() { // 테스트 메서드들이 각각 실행되기 전에, 항상 클린 실행되게 하는 메서드.
@@ -102,7 +102,31 @@ class PostControllerTest {
         assertEquals("제목입니다.", post.getTitle());
         assertEquals("내용입니다.", post.getContent());
     }
+
+    @Test
+    @DisplayName("글 1개 조회")
+    void test4() throws Exception {
+        // given
+        Post post = Post.builder()
+                .title("123456789012345")
+                .content("bar")
+                .build();
+        postRepository.save(post);
+
+        // expected
+        mockMvc.perform(get("/posts/{postId}", post.getId())
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(post.getId()))
+                .andExpect(jsonPath("$.title").value("1234567890"))
+                .andExpect(jsonPath("$.content").value("bar"))
+                .andDo(print());
+    }
+
 }
+
+
+
 
 
 
