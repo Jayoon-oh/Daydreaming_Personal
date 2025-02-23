@@ -15,7 +15,7 @@ public class PostResponse {
     private final String title;
     private final String content;
 
-    // 생성자 오버로딩
+    // 생성자 오버로딩 -> post Entity 받음
     public PostResponse(Post post) {
         this.id = post.getId();
         this.title = post.getTitle();
