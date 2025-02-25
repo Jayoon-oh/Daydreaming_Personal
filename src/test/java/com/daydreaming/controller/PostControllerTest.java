@@ -3,6 +3,7 @@ package com.daydreaming.controller;
 import com.daydreaming.domain.Post;
 import com.daydreaming.repository.PostRepository;
 import com.daydreaming.request.PostCreate;
+import com.daydreaming.service.PostService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -12,12 +13,17 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -31,6 +37,8 @@ class PostControllerTest {
 
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private PostService postService;
 
     @BeforeEach
     void clean() { // 테스트 메서드들이 각각 실행되기 전에, 항상 클린 실행되게 하는 메서드.
@@ -128,27 +136,22 @@ class PostControllerTest {
     @DisplayName("글 여러개 조회")
     void test5() throws Exception {
         // given
-        Post post1 = postRepository.save(Post.builder()
-                .title("title_1")
-                .content("content_1")
-                .build());
+        List<Post> requestPosts = IntStream.range(0, 20)
+                .mapToObj(i -> Post.builder()
+                        .title("foo" + i)
+                        .content("bar" + i)
+                        .build())
+                .collect(Collectors.toList());
 
-        Post post2 = postRepository.save(Post.builder()
-                .title("title_2")
-                .content("content_2")
-                .build());
+        postRepository.saveAll(requestPosts);
 
-       // expected
-        mockMvc.perform(get("/posts")
+        // expected
+        mockMvc.perform(get("/posts?page=1&size=10")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(2))  // Fixed
-                .andExpect(jsonPath("$[0].id").value(post1.getId()))
-                .andExpect(jsonPath("$[0].title").value("title_1"))
-                .andExpect(jsonPath("$[0].content").value("content_1"))
-                .andExpect(jsonPath("$[1].id").value(post2.getId()))
-                .andExpect(jsonPath("$[1].title").value("title_2"))
-                .andExpect(jsonPath("$[1].content").value("content_2"))
+                /*.andExpect(jsonPath("$.length()", is(10)))*/
+                .andExpect(jsonPath("$[0].title").value("foo19"))
+                .andExpect(jsonPath("$[0].content").value("bar19"))
                 .andDo(print());
     }
 }

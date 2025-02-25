@@ -6,6 +6,7 @@ import com.daydreaming.request.PostCreate;
 import com.daydreaming.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,10 +40,10 @@ public class PostService {
                 .build();
     }
 
-    public List<PostResponse> getList() {
+    public List<PostResponse> getList(Pageable pageable) {
         return postRepository.findAll().stream()
                 .map(PostResponse::new)
                 .collect(Collectors.toList());
     }
-
 }
+
