@@ -4,7 +4,6 @@ import com.daydreaming.domain.Article;
 import com.daydreaming.dto.AddArticleRequest;
 import com.daydreaming.dto.UpdateArticleRequest;
 import com.daydreaming.repository.BlogRepository;
-import jakarta.transaction.TransactionScoped;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
