@@ -34,6 +34,14 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    // 시큐리티 스타터
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    // 스프링 시큐리티 사용하기 위한 의존성
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+    // 시큐리티 테스트 위함
+    testImplementation 'org.springframework.security:spring-security-test'
+
 }
 
 tasks.named('test') {
